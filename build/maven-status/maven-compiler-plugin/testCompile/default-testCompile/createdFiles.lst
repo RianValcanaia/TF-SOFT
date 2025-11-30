@@ -1,0 +1,8 @@
+testes/SolicitacaoModelTest.class
+bean/SolicitacaoBeanTest.class
+bean/UsuarioBeanTest.class
+bean/EnderecoBeanTest.class
+testes/UsuarioControllerTest.class
+testes/DoacaoControllerTest.class
+testes/SolicitacaoControllerTest.class
+bean/DoacaoBeanTest.class

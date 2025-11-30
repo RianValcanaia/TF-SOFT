@@ -14,7 +14,7 @@ public class Conexao {
             // Tenta a conexão
             String url = "jdbc:postgresql://localhost:5432/plataforma_doacao"; 
             String user = "postgres";
-            String senha = "asdb12345"; 
+            String senha = "teste"; 
 
             // se der boa retorna a conexão funcionando
             return DriverManager.getConnection(url, user, senha);
