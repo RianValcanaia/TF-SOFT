@@ -108,11 +108,15 @@ public class SolicitacaoModel {
 
     public static void updateStatus(Connection con, int idSolicitacao, String novoStatus) throws SQLException {
         String sql = "UPDATE solicitacao SET status = ? WHERE id_solicitacao = ?";
-        PreparedStatement st = con.prepareStatement(sql);
-        st.setString(1, novoStatus);
-        st.setInt(2, idSolicitacao);
-        st.executeUpdate();
-        st.close();
+        PreparedStatement st = null;
+        try{
+            st = con.prepareStatement(sql);
+            st.setString(1, novoStatus);
+            st.setInt(2, idSolicitacao);
+            st.executeUpdate();
+        } finally {
+            if (st != null) st.close();
+        }
     }
 
     public static void delete(Connection con, int idSolicitacao) throws SQLException {
