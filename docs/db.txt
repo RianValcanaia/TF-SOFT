@@ -1,0 +1,241 @@
+-- SCRIPT COMPLETO: LIMPEZA + CRIAÇÃO + DADOS DE TESTE
+-- Banco de dados: plataforma_doacao
+
+-- ==========================================================
+-- 1. LIMPEZA TOTAL (DROP)
+-- ==========================================================
+DROP TABLE IF EXISTS rel_solicitadoacao CASCADE;
+DROP TABLE IF EXISTS rel_solicita CASCADE;
+DROP TABLE IF EXISTS solicitacao CASCADE;
+DROP TABLE IF EXISTS vestuario CASCADE;
+DROP TABLE IF EXISTS alimento CASCADE;
+DROP TABLE IF EXISTS higiene CASCADE;
+DROP TABLE IF EXISTS rel_itemdoacao CASCADE;
+DROP TABLE IF EXISTS itemdoado CASCADE;
+DROP TABLE IF EXISTS rel_enderecocoleta CASCADE;
+DROP TABLE IF EXISTS rel_cadastradoacao CASCADE;
+DROP TABLE IF EXISTS doacao CASCADE;
+DROP TABLE IF EXISTS rel_enderecousuario CASCADE;
+DROP TABLE IF EXISTS receptor CASCADE;
+DROP TABLE IF EXISTS doador CASCADE;
+DROP TABLE IF EXISTS usuario CASCADE;
+DROP TABLE IF EXISTS endereco CASCADE;
+
+-- ==========================================================
+-- 2. CRIAÇÃO DAS TABELAS (SCHEMA V3)
+-- ==========================================================
+
+-- Tabela Endereco
+CREATE TABLE endereco (
+    id_endereco SERIAL PRIMARY KEY,
+    rua VARCHAR(150),
+    numero INT,
+    cidade VARCHAR(100),
+    bairro VARCHAR(100),
+    estado CHAR(2),
+    cep INT,
+    pais VARCHAR(50),         
+    latitude DECIMAL(10, 8),  
+    longitude DECIMAL(11, 8)  
+);
+
+-- Tabela Usuario
+CREATE TABLE usuario (
+    id_usuario SERIAL PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    email VARCHAR(150) UNIQUE,
+    telefone BIGINT
+);
+
+-- Especialização: Doador
+CREATE TABLE doador (
+    id_usuario INT PRIMARY KEY REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    cnpj BIGINT,
+    tipoestabelecimento VARCHAR(50)
+);
+
+-- Especialização: Receptor
+CREATE TABLE receptor (
+    id_usuario INT PRIMARY KEY REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    cpf_cnpj BIGINT,
+    nomeresponsavel VARCHAR(150)
+);
+
+-- RELACAO: Usuario <-> Endereco
+CREATE TABLE rel_enderecousuario (
+    id_endereco INT REFERENCES endereco(id_endereco) ON DELETE CASCADE,
+    id_usuario INT REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    PRIMARY KEY (id_endereco, id_usuario)
+);
+
+-- Tabela Doacao
+CREATE TABLE doacao (
+    id_doacao SERIAL PRIMARY KEY,
+    descricaogeral VARCHAR(255),
+    statusdoacao VARCHAR(50) DEFAULT 'Disponivel',
+    datacadastro DATE DEFAULT CURRENT_DATE
+);
+
+-- RELACAO: Quem Cadastrou a Doação
+CREATE TABLE rel_cadastradoacao (
+    id_doacao INT REFERENCES doacao(id_doacao) ON DELETE CASCADE,
+    id_usuario INT REFERENCES doador(id_usuario) ON DELETE CASCADE,
+    PRIMARY KEY (id_doacao, id_usuario)
+);
+
+-- RELACAO: Endereço de Coleta
+CREATE TABLE rel_enderecocoleta (
+    id_doacao INT REFERENCES doacao(id_doacao) ON DELETE CASCADE,
+    id_endereco INT REFERENCES endereco(id_endereco),
+    datahora TIMESTAMP
+);
+
+-- Tabela Item Doado
+CREATE TABLE itemdoado (
+    id_item SERIAL PRIMARY KEY,
+    descricao VARCHAR(150),
+    quantidade DECIMAL(10,2),
+    unidademedida VARCHAR(20)
+);
+
+-- RELACAO: Item <-> Doacao
+CREATE TABLE rel_itemdoacao (
+    id_item INT REFERENCES itemdoado(id_item) ON DELETE CASCADE,
+    id_doacao INT REFERENCES doacao(id_doacao) ON DELETE CASCADE,
+    PRIMARY KEY (id_item, id_doacao)
+);
+
+-- Subtipo: Alimento
+CREATE TABLE alimento (
+    id_item INT PRIMARY KEY REFERENCES itemdoado(id_item) ON DELETE CASCADE,
+    datavalidade DATE
+);
+
+-- Subtipo: Vestuario
+CREATE TABLE vestuario (
+    id_item INT PRIMARY KEY REFERENCES itemdoado(id_item) ON DELETE CASCADE,
+    faixaetaria VARCHAR(50),
+    genero CHAR(1), 
+    tamanho INT
+);
+
+-- Subtipo: Higiene
+CREATE TABLE higiene (
+    id_item INT PRIMARY KEY REFERENCES itemdoado(id_item) ON DELETE CASCADE,
+    volume DECIMAL(10,2)
+);
+
+-- Tabela Solicitacao
+CREATE TABLE solicitacao (
+    id_solicitacao SERIAL PRIMARY KEY,
+    datasolicitacao DATE DEFAULT CURRENT_DATE,
+    status VARCHAR(50) DEFAULT 'Pendente'
+);
+
+-- RELACAO: Quem Solicitou
+CREATE TABLE rel_solicita (
+    id_solicitacao INT REFERENCES solicitacao(id_solicitacao) ON DELETE CASCADE,
+    id_usuario INT REFERENCES receptor(id_usuario) ON DELETE CASCADE,
+    PRIMARY KEY (id_solicitacao, id_usuario)
+);
+
+-- RELACAO: O Que Foi Solicitado
+CREATE TABLE rel_solicitadoacao (
+    id_solicitacao INT REFERENCES solicitacao(id_solicitacao) ON DELETE CASCADE,
+    id_doacao INT REFERENCES doacao(id_doacao) ON DELETE CASCADE,
+    PRIMARY KEY (id_solicitacao, id_doacao)
+);
+
+-- ==========================================================
+-- 3. INSERÇÃO DE DADOS (POPULAÇÃO COMPLETA)
+-- ==========================================================
+
+-- 3.1. INSERINDO ENDEREÇOS
+INSERT INTO endereco (rua, numero, cidade, bairro, estado, cep, pais, latitude, longitude) VALUES 
+('Rua das Palmeiras', 100, 'Joinville', 'Centro', 'SC', 89200000, 'Brasil', -26.3044, -48.8456), -- ID 1
+('Av. Paulista', 1500, 'São Paulo', 'Bela Vista', 'SP', 01310100, 'Brasil', -23.5617, -46.6560), -- ID 2
+('Rua XV de Novembro', 50, 'Curitiba', 'Centro', 'PR', 80020310, 'Brasil', -25.4284, -49.2733), -- ID 3
+('Rua Beira Rio', 202, 'Itajaí', 'Fazenda', 'SC', 88301000, 'Brasil', -26.9098, -48.6603);    -- ID 4
+
+-- 3.2. INSERINDO USUÁRIOS
+INSERT INTO usuario (nome, email, telefone) VALUES 
+('Supermercado Preço Bom', 'contato@precobom.com', 4733331111),   -- ID 1 (Doador)
+('Loja VestBem', 'vendas@vestbem.com', 4130302020),               -- ID 2 (Doador)
+('Farmácia Saúde Total', 'farmacia@saude.com', 4730004040),      -- ID 3 (Doador)
+('ONG Alimentar Vidas', 'ong@alimentar.org', 11999998888),        -- ID 4 (Receptor)
+('Orfanato Lar Feliz', 'contato@larfeliz.org', 47988887777);      -- ID 5 (Receptor)
+
+-- 3.3. VINCULANDO USUÁRIOS A ENDEREÇOS
+INSERT INTO rel_enderecousuario (id_endereco, id_usuario) VALUES 
+(1, 1), -- Supermercado em Joinville
+(3, 2), -- Loja em Curitiba
+(4, 3), -- Farmácia em Itajaí
+(2, 4), -- ONG em SP
+(1, 5); -- Orfanato em Joinville
+
+-- 3.4. DEFININDO QUEM É DOADOR
+INSERT INTO doador (id_usuario, cnpj, tipoestabelecimento) VALUES 
+(1, 12345678000199, 'Supermercado'),
+(2, 98765432000188, 'Loja de Roupas'),
+(3, 11222333000177, 'Farmácia');
+
+-- 3.5. DEFININDO QUEM É RECEPTOR
+INSERT INTO receptor (id_usuario, cpf_cnpj, nomeresponsavel) VALUES 
+(4, 55566677700011, 'João da Silva'),
+(5, 44433322200055, 'Maria Oliveira');
+
+-- 3.6. DOACAO A (Alimentos)
+INSERT INTO doacao (descricaogeral, statusdoacao, datacadastro) VALUES 
+('Doação de excedentes de arroz e feijão', 'Disponivel', CURRENT_DATE); -- ID 1
+
+INSERT INTO rel_cadastradoacao (id_doacao, id_usuario) VALUES (1, 1);
+INSERT INTO rel_enderecocoleta (id_doacao, id_endereco, datahora) VALUES (1, 1, '2025-12-01 14:00:00');
+
+INSERT INTO itemdoado (descricao, quantidade, unidademedida) VALUES 
+('Arroz Branco Tipo 1', 10.0, 'kg'), -- Item 1
+('Feijão Preto', 5.0, 'kg');         -- Item 2
+
+INSERT INTO rel_itemdoacao (id_item, id_doacao) VALUES (1, 1), (2, 1);
+
+INSERT INTO alimento (id_item, datavalidade) VALUES 
+(1, '2026-06-30'),
+(2, '2026-05-20');
+
+-- 3.7. DOACAO B (Vestuário)
+INSERT INTO doacao (descricaogeral, statusdoacao, datacadastro) VALUES 
+('Casacos de inverno coleção passada', 'Agendada', CURRENT_DATE); -- ID 2
+
+INSERT INTO rel_cadastradoacao (id_doacao, id_usuario) VALUES (2, 2);
+INSERT INTO rel_enderecocoleta (id_doacao, id_endereco, datahora) VALUES (2, 3, '2025-11-30 10:00:00');
+
+INSERT INTO itemdoado (descricao, quantidade, unidademedida) VALUES 
+('Jaqueta Impermeável', 15.0, 'unid'); -- Item 3
+
+INSERT INTO rel_itemdoacao (id_item, id_doacao) VALUES (3, 2);
+
+INSERT INTO vestuario (id_item, faixaetaria, genero, tamanho) VALUES 
+(3, 'Adulto', 'U', 42);
+
+-- 3.8. DOACAO C (Higiene)
+INSERT INTO doacao (descricaogeral, statusdoacao, datacadastro) VALUES 
+('Kits de higiene pessoal', 'Disponivel', CURRENT_DATE); -- ID 3
+
+INSERT INTO rel_cadastradoacao (id_doacao, id_usuario) VALUES (3, 3);
+INSERT INTO rel_enderecocoleta (id_doacao, id_endereco, datahora) VALUES (3, 4, '2025-12-05 09:00:00');
+
+INSERT INTO itemdoado (descricao, quantidade, unidademedida) VALUES 
+('Shampoo Neutro', 20.0, 'frascos'); -- Item 4
+
+INSERT INTO rel_itemdoacao (id_item, id_doacao) VALUES (4, 3);
+
+INSERT INTO higiene (id_item, volume) VALUES 
+(4, 350.00); 
+
+-- 3.9. SOLICITAÇÕES
+INSERT INTO solicitacao (datasolicitacao, status) VALUES (CURRENT_DATE, 'Pendente'); -- Solicitacao 1
+INSERT INTO rel_solicita (id_solicitacao, id_usuario) VALUES (1, 5); -- Orfanato
+INSERT INTO rel_solicitadoacao (id_solicitacao, id_doacao) VALUES (1, 1); -- Pede Arroz
+
+INSERT INTO solicitacao (datasolicitacao, status) VALUES (CURRENT_DATE, 'Aceita'); -- Solicitacao 2
+INSERT INTO rel_solicita (id_solicitacao, id_usuario) VALUES (2, 4); -- ONG
+INSERT INTO rel_solicitadoacao (id_solicitacao, id_doacao) VALUES (2, 2); -- Pede Roupas

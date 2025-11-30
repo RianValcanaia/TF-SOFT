@@ -1,0 +1,5 @@
+# Compilar
+javac -d build/classes -cp postgresql-42.6.0.jar Principal.java src/**/*.java
+
+# Rodar
+java -cp "build/classes:postgresql-42.6.0.jar" Principal

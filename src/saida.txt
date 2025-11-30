@@ -1,0 +1,1936 @@
+./bean/DoacaoBean.java
+----------------------------------------
+package bean;
+import java.sql.Date;
+
+public class DoacaoBean {
+    // Tabela Doacao
+    private int idDoacao;
+    private String descricaoGeral;
+    private String statusDoacao;
+    private Date dataCadastro;
+
+    // Tabela ItemDoado
+    private int idItem;
+    private String descricaoItem;
+    private double quantidade;
+    private String unidadeMedida;
+
+    // Subtipos (Alimento, Vestuario, Higiene)
+    private String tipoItem; // "A", "V" ou "H"
+    private Date dataValidade; // Alimento
+    private String faixaEtaria; // Vestuario
+    private String genero; // Vestuario
+    private int tamanho; // Vestuario
+    private double volume; // Higiene
+
+    // Vínculos
+    private String nomeDoador; // Para exibição
+    private EnderecoBean enderecoColeta;
+
+    public int getIdDoacao() { return idDoacao; }
+    public void setIdDoacao(int id) { this.idDoacao = id; }
+    public String getDescricaoGeral() { return descricaoGeral; }
+    public void setDescricaoGeral(String d) { this.descricaoGeral = d; }
+    public String getStatusDoacao() { return statusDoacao; }
+    public void setStatusDoacao(String s) { this.statusDoacao = s; }
+    
+    public String getDescricaoItem() { return descricaoItem; }
+    public void setDescricaoItem(String d) { this.descricaoItem = d; }
+    public double getQuantidade() { return quantidade; }
+    public void setQuantidade(double q) { this.quantidade = q; }
+    public String getUnidadeMedida() { return unidadeMedida; }
+    public void setUnidadeMedida(String u) { this.unidadeMedida = u; }
+    
+    public String getTipoItem() { return tipoItem; }
+    public void setTipoItem(String t) { this.tipoItem = t; }
+    public Date getDataValidade() { return dataValidade; }
+    public void setDataValidade(Date d) { this.dataValidade = d; }
+    
+    public String getFaixaEtaria() { return faixaEtaria; }
+    public void setFaixaEtaria(String f) { this.faixaEtaria = f; }
+    public String getGenero() { return genero; }
+    public void setGenero(String g) { this.genero = g; }
+    public int getTamanho() { return tamanho; }
+    public void setTamanho(int t) { this.tamanho = t; }
+    
+    public void setNomeDoador(String n) { this.nomeDoador = n; }
+    
+    @Override
+    public String toString() {
+        return "ID: " + idDoacao + " | " + descricaoGeral + " | Status: " + statusDoacao + " | Item: " + descricaoItem;
+    }
+}
+
+
+./bean/SolicitacaoBean.java
+----------------------------------------
+package bean;
+import java.sql.Date;
+
+public class SolicitacaoBean {
+    private int idSolicitacao;
+    private Date dataSolicitacao;
+    private String status;
+    private int idReceptor;
+    private int idDoacao;
+    private String nomeReceptor; // Para exibição
+
+    public int getIdSolicitacao() { return idSolicitacao; }
+    public void setIdSolicitacao(int id) { this.idSolicitacao = id; }
+    public String getStatus() { return status; }
+    public void setStatus(String s) { this.status = s; }
+    public int getIdReceptor() { return idReceptor; }
+    public void setIdReceptor(int id) { this.idReceptor = id; }
+    public int getIdDoacao() { return idDoacao; }
+    public void setIdDoacao(int id) { this.idDoacao = id; }
+    public void setNomeReceptor(String n) { this.nomeReceptor = n; }
+
+    @Override
+    public String toString() {
+        return "Solicitacao #" + idSolicitacao + " | Status: " + status + " | Receptor: " + nomeReceptor;
+    }
+}
+
+
+./bean/EnderecoBean.java
+----------------------------------------
+package bean;
+
+public class EnderecoBean {
+    private int id;
+    private String rua;
+    private int numero;
+    private String cidade;
+    private String estado;
+    private String bairro;
+    private int cep;
+
+    // Construtor vazio
+    public EnderecoBean() {}
+
+    // Construtor rápido
+    public EnderecoBean(String rua, int numero, String cidade) {
+        this.rua = rua;
+        this.numero = numero;
+        this.cidade = cidade;
+    }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getRua() { return rua; }
+    public void setRua(String rua) { this.rua = rua; }
+    public int getNumero() { return numero; }
+    public void setNumero(int numero) { this.numero = numero; }
+    public String getCidade() { return cidade; }
+    public void setCidade(String cidade) { this.cidade = cidade; }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
+    public String getBairro() { return bairro; }
+    public void setBairro(String bairro) { this.bairro = bairro; }
+    public int getCep() { return cep; }
+    public void setCep(int cep) { this.cep = cep; }
+    
+    @Override
+    public String toString() {
+        return rua + ", " + numero + " - " + cidade;
+    }
+}
+
+
+./bean/UsuarioBean.java
+----------------------------------------
+package bean;
+
+public class UsuarioBean {
+    // Dados Comuns (Tabela Usuario)
+    private int id;
+    private String nome;
+    private String email;
+    private long telefone;
+    
+    // Dados de Doador (Tabela Doador)
+    private long cnpj;
+    private String tipoEstabelecimento;
+
+    // Dados de Receptor (Tabela Receptor)
+    private long cpfCnpjReceptor;
+    private String nomeResponsavel;
+
+    // Controle interno
+    private String tipoUsuario; // "DOADOR" ou "RECEPTOR"
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public long getTelefone() { return telefone; }
+    public void setTelefone(long telefone) { this.telefone = telefone; }
+    
+    public long getCnpj() { return cnpj; }
+    public void setCnpj(long cnpj) { this.cnpj = cnpj; }
+    public String getTipoEstabelecimento() { return tipoEstabelecimento; }
+    public void setTipoEstabelecimento(String tipo) { this.tipoEstabelecimento = tipo; }
+    
+    public long getCpfCnpjReceptor() { return cpfCnpjReceptor; }
+    public void setCpfCnpjReceptor(long cpf) { this.cpfCnpjReceptor = cpf; }
+    public String getNomeResponsavel() { return nomeResponsavel; }
+    public void setNomeResponsavel(String nome) { this.nomeResponsavel = nome; }
+    
+    public String getTipoUsuario() { return tipoUsuario; }
+    public void setTipoUsuario(String tipoUsuario) { this.tipoUsuario = tipoUsuario; }
+
+    @Override
+    public String toString() {
+        return id + " - " + nome + " (" + tipoUsuario + ")";
+    }
+}
+
+
+./controller/SolicitacaoController.java
+----------------------------------------
+package controller;
+
+import java.sql.Connection;
+import java.util.Scanner;
+import model.SolicitacaoModel;
+import bean.SolicitacaoBean;
+
+public class SolicitacaoController {
+    private Scanner in = new Scanner(System.in);
+    
+    public void criarSolicitacao(Connection con) {
+        System.out.println("--- SOLICITAR DOACAO ---");
+        System.out.print("ID da Doacao desejada: ");
+        int idDoacao = in.nextInt();
+        System.out.print("ID do seu Usuario (Receptor): ");
+        int idReceptor = in.nextInt();
+        in.nextLine();
+        
+        try {
+            SolicitacaoModel.create(con, idDoacao, idReceptor);
+            System.out.println("Solicitacao registrada! Status: Pendente");
+        } catch(Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+    
+    public void listar(Connection con) {
+        try {
+            System.out.println("--- TODAS AS SOLICITACOES ---");
+            for(SolicitacaoBean s : SolicitacaoModel.listMinhasSolicitacoes(con)) {
+                System.out.println(s);
+            }
+        } catch(Exception e) {
+            System.out.println("Erro ao listar: " + e.getMessage());
+        }
+    }
+
+    public void atualizar(Connection con) {
+        System.out.println("--- ATUALIZAR SOLICITACAO ---");
+        System.out.print("ID da Solicitacao: ");
+        int id = in.nextInt();
+        in.nextLine();
+        System.out.print("Novo Status (Aprovada/Recusada/Entregue): ");
+        String status = in.nextLine();
+
+        try {
+            SolicitacaoModel.updateStatus(con, id, status);
+            System.out.println("Solicitacao atualizada.");
+        } catch(Exception e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
+    public void deletar(Connection con) {
+        System.out.println("--- DELETAR SOLICITACAO ---");
+        System.out.print("ID da Solicitacao: ");
+        int id = in.nextInt();
+        in.nextLine();
+
+        try {
+            SolicitacaoModel.delete(con, id);
+            System.out.println("Solicitacao removida.");
+        } catch(Exception e) {
+            System.out.println("Erro ao deletar: " + e.getMessage());
+        }
+    }
+}
+
+
+./controller/UsuarioController.java
+----------------------------------------
+package controller;
+
+import java.sql.Connection;
+import java.util.Scanner;
+import bean.UsuarioBean;
+import bean.EnderecoBean;
+import model.UsuarioModel;
+
+public class UsuarioController {
+    
+    private Scanner in = new Scanner(System.in);
+
+    public void cadastrar(Connection con) {
+        UsuarioBean user = new UsuarioBean();
+        EnderecoBean end = new EnderecoBean();
+
+        System.out.println("--- CADASTRO DE USUARIO ---");
+        System.out.print("Nome: "); user.setNome(in.nextLine());
+        System.out.print("Email: "); user.setEmail(in.next());
+        System.out.print("Telefone: "); user.setTelefone(in.nextLong());
+        
+        System.out.print("Tipo (1-Doador / 2-Receptor): ");
+        int tipo = in.nextInt();
+        
+        if (tipo == 1) {
+            user.setTipoUsuario("DOADOR");
+            System.out.print("CNPJ: "); user.setCnpj(in.nextLong());
+            System.out.print("Tipo Estabelecimento (Loja/Mercado): "); user.setTipoEstabelecimento(in.next());
+        } else {
+            user.setTipoUsuario("RECEPTOR");
+            System.out.print("CPF/CNPJ: "); user.setCpfCnpjReceptor(in.nextLong());
+            System.out.print("Responsavel: "); user.setNomeResponsavel(in.next());
+        }
+        in.nextLine(); // Limpar buffer
+
+        System.out.println("--- ENDERECO ---");
+        System.out.print("Rua: "); end.setRua(in.nextLine());
+        System.out.print("Numero: "); end.setNumero(in.nextInt());
+        System.out.print("Cidade: "); end.setCidade(in.next());
+
+        try {
+            UsuarioModel.create(con, user, end);
+            System.out.println("Usuario cadastrado com ID: " + user.getId());
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar: " + e.getMessage());
+        }
+    }
+    
+    public void listar(Connection con) {
+        try {
+            System.out.println("--- LISTA GERAL DE USUARIOS ---");
+            for(UsuarioBean u : UsuarioModel.listAll(con)) {
+                System.out.println("ID: " + u.getId() + " | Nome: " + u.getNome() + " | Email: " + u.getEmail());
+            }
+        } catch (Exception e) {
+            System.out.println("Erro listar: " + e.getMessage());
+        }
+    }
+
+    public void listarDoadores(Connection con) {
+        try {
+            System.out.println("--- LISTA DE DOADORES ---");
+            for(UsuarioBean u : UsuarioModel.listDoadores(con)) {
+                System.out.println("ID: " + u.getId() + " | Nome: " + u.getNome() + " | Tipo: " + u.getTipoEstabelecimento());
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar doadores: " + e.getMessage());
+        }
+    }
+
+    public void listarReceptores(Connection con) {
+        try {
+            System.out.println("--- LISTA DE RECEPTORES ---");
+            for(UsuarioBean u : UsuarioModel.listReceptores(con)) {
+                System.out.println("ID: " + u.getId() + " | Nome: " + u.getNome() + " | Responsavel: " + u.getNomeResponsavel());
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar receptores: " + e.getMessage());
+        }
+    }
+
+    public void atualizar(Connection con) {
+        System.out.println("--- ATUALIZAR USUARIO ---");
+        System.out.print("ID do Usuario: ");
+        int id = in.nextInt();
+        System.out.print("Novo Email: ");
+        String email = in.next();
+        System.out.print("Novo Telefone: ");
+        long tel = in.nextLong();
+        in.nextLine(); // buffer
+
+        try {
+            UsuarioModel.update(con, id, email, tel);
+            System.out.println("Usuario atualizado!");
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
+    public void deletar(Connection con) {
+        System.out.println("--- DELETAR USUARIO ---");
+        System.out.print("ID do Usuario a excluir: ");
+        int id = in.nextInt();
+        in.nextLine();
+
+        try {
+            UsuarioModel.delete(con, id);
+            System.out.println("Usuario deletado com sucesso.");
+        } catch (Exception e) {
+            System.out.println("Erro ao deletar (verifique se o usuario tem vinculos): " + e.getMessage());
+        }
+    }
+}
+
+
+./controller/DoacaoController.java
+----------------------------------------
+package controller;
+
+import java.sql.Connection;
+import java.util.Scanner;
+import bean.DoacaoBean;
+import model.DoacaoModel;
+
+public class DoacaoController {
+    private Scanner in = new Scanner(System.in);
+
+    public void cadastrar(Connection con) {
+        DoacaoBean d = new DoacaoBean();
+
+        System.out.println("--- NOVA DOACAO ---");
+        System.out.print("ID do Usuario Doador (deve existir): ");
+        int idDoador = in.nextInt();
+        in.nextLine();
+
+        System.out.print("Titulo da Doacao: "); d.setDescricaoGeral(in.nextLine());
+        System.out.print("Nome do Item: "); d.setDescricaoItem(in.nextLine());
+        System.out.print("Quantidade: "); d.setQuantidade(in.nextDouble());
+        System.out.print("Unidade (kg, unid): "); d.setUnidadeMedida(in.next());
+        
+        System.out.print("Tipo (A-Alimento, V-Vestuario, O-Outros): ");
+        String tipo = in.next();
+        d.setTipoItem(tipo);
+        
+        if ("V".equalsIgnoreCase(tipo)) {
+            System.out.print("Tamanho (numero): "); d.setTamanho(in.nextInt());
+            System.out.print("Genero (M/F/U): "); d.setGenero(in.next());
+            d.setFaixaEtaria("Adulto");
+        }
+
+        try {
+            DoacaoModel.create(con, d, idDoador);
+            System.out.println("Doacao cadastrada com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+            e.printStackTrace(); // Ajuda no debug
+        }
+    }
+    
+    public void listarCompleto(Connection con) {
+        try {
+            System.out.println("--- DOACOES DISPONIVEIS ---");
+            for(DoacaoBean d : DoacaoModel.listCompleta(con)) {
+                System.out.println(d);
+            }
+        } catch(Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+    public void listarItensDaDoacao(Connection con) {
+        System.out.print("Digite o ID da Doacao para ver os itens: ");
+        int id = in.nextInt();
+        in.nextLine();
+        try {
+            System.out.println("--- ITENS DA DOACAO " + id + " ---");
+            for (String s : DoacaoModel.listItensDaDoacao(con, id)) {
+                System.out.println(s);
+            }
+        } catch(Exception e) {
+            System.out.println("Erro ao listar itens: " + e.getMessage());
+        }
+    }
+
+    public void atualizarDoacao(Connection con) {
+        System.out.print("ID da Doacao a atualizar: ");
+        int id = in.nextInt();
+        in.nextLine();
+        System.out.print("Novo Status (Disponivel/Agendada/Concluida): ");
+        String status = in.nextLine();
+
+        try {
+            DoacaoModel.updateDoacao(con, id, status);
+            System.out.println("Status da doacao atualizado.");
+        } catch(Exception e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
+    public void atualizarItem(Connection con) {
+        System.out.print("ID do Item a atualizar: ");
+        int id = in.nextInt();
+        System.out.print("Nova Quantidade: ");
+        double qtd = in.nextDouble();
+        in.nextLine();
+
+        try {
+            DoacaoModel.updateItem(con, id, qtd);
+            System.out.println("Item atualizado.");
+        } catch(Exception e) {
+            System.out.println("Erro ao atualizar item: " + e.getMessage());
+        }
+    }
+
+    public void deletarDoacao(Connection con) {
+        System.out.print("ID da Doacao a deletar: ");
+        int id = in.nextInt();
+        in.nextLine();
+        try {
+            DoacaoModel.deleteDoacao(con, id);
+            System.out.println("Doacao removida.");
+        } catch(Exception e) {
+            System.out.println("Erro ao deletar doacao: " + e.getMessage());
+        }
+    }
+
+    public void deletarItem(Connection con) {
+        System.out.print("ID do Item a deletar: ");
+        int id = in.nextInt();
+        in.nextLine();
+        try {
+            DoacaoModel.deleteItem(con, id);
+            System.out.println("Item removido.");
+        } catch(Exception e) {
+            System.out.println("Erro ao deletar item: " + e.getMessage());
+        }
+    }
+}
+
+
+./model/SolicitacaoModel.java
+----------------------------------------
+package model;
+
+import java.sql.*;
+import java.util.ArrayList;
+import bean.SolicitacaoBean;
+
+public class SolicitacaoModel {
+
+    public static void create(Connection con, int idDoacao, int idReceptor) throws SQLException {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            con.setAutoCommit(false);
+
+            // 1. Solicitacao
+            String sqlSol = "INSERT INTO solicitacao (datasolicitacao, status) VALUES (CURRENT_DATE, 'Pendente') RETURNING id_solicitacao";
+            st = con.prepareStatement(sqlSol);
+            rs = st.executeQuery();
+            rs.next();
+            int idSolicitacao = rs.getInt(1);
+            st.close();
+
+            // 2. SolicitaDoacao
+            st = con.prepareStatement("INSERT INTO solicitadoacao (id_solicitacao, id_doacao) VALUES (?, ?)");
+            st.setInt(1, idSolicitacao);
+            st.setInt(2, idDoacao);
+            st.execute();
+            st.close();
+
+            // 3. Solicita
+            st = con.prepareStatement("INSERT INTO solicita (id_solicitacao, id_receptor) VALUES (?, ?)");
+            st.setInt(1, idSolicitacao);
+            st.setInt(2, idReceptor);
+            st.execute();
+            st.close();
+            
+            con.commit();
+        } catch (SQLException e) {
+            con.rollback();
+            throw e;
+        } finally {
+            con.setAutoCommit(true);
+        }
+    }
+    
+    public static ArrayList<SolicitacaoBean> listMinhasSolicitacoes(Connection con) throws SQLException {
+        ArrayList<SolicitacaoBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        String sql = "SELECT s.id_solicitacao, s.status, u.nome " +
+                     "FROM solicitacao s " +
+                     "JOIN solicita sol ON s.id_solicitacao = sol.id_solicitacao " +
+                     "JOIN usuario u ON sol.id_receptor = u.id_usuario";
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()){
+            SolicitacaoBean sb = new SolicitacaoBean();
+            sb.setIdSolicitacao(rs.getInt(1));
+            sb.setStatus(rs.getString(2));
+            sb.setNomeReceptor(rs.getString(3));
+            list.add(sb);
+        }
+        return list;
+    }
+
+    public static void updateStatus(Connection con, int idSolicitacao, String novoStatus) throws SQLException {
+        String sql = "UPDATE solicitacao SET status = ? WHERE id_solicitacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setString(1, novoStatus);
+        st.setInt(2, idSolicitacao);
+        st.executeUpdate();
+    }
+
+    public static void delete(Connection con, int idSolicitacao) throws SQLException {
+        String sql = "DELETE FROM solicitacao WHERE id_solicitacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idSolicitacao);
+        st.executeUpdate();
+    }
+}
+
+
+./model/DoacaoModel.java
+----------------------------------------
+package model;
+
+import java.sql.*;
+import java.util.ArrayList;
+import bean.DoacaoBean;
+
+public class DoacaoModel {
+
+    public static void create(Connection con, DoacaoBean doacao, int idDoador) throws SQLException {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con.setAutoCommit(false);
+
+            // 1. Doacao
+            String sqlDoacao = "INSERT INTO doacao (datacadastro, descricaogeral, statusdoacao) VALUES (CURRENT_DATE, ?, 'Disponivel') RETURNING id_doacao";
+            st = con.prepareStatement(sqlDoacao);
+            st.setString(1, doacao.getDescricaoGeral());
+            rs = st.executeQuery();
+            rs.next();
+            int idDoacao = rs.getInt(1);
+            doacao.setIdDoacao(idDoacao);
+            st.close();
+
+            // 2. CadastraDoacao
+            st = con.prepareStatement("INSERT INTO cadastradoacao (id_doacao, id_usuario) VALUES (?, ?)");
+            st.setInt(1, idDoacao);
+            st.setInt(2, idDoador);
+            st.execute();
+            st.close();
+            
+            // 3. Endereco Coleta (busca um existente do usuario)
+            String sqlBuscaEnd = "SELECT id_endereco FROM enderecousuario WHERE id_usuario = ? LIMIT 1";
+            st = con.prepareStatement(sqlBuscaEnd);
+            st.setInt(1, idDoador);
+            rs = st.executeQuery();
+            int idEndereco = 0;
+            if (rs.next()) idEndereco = rs.getInt(1);
+            st.close();
+            
+            if (idEndereco > 0) {
+                st = con.prepareStatement("INSERT INTO enderecocoleta (id_doacao, id_endereco, datahora) VALUES (?, ?, CURRENT_TIMESTAMP)");
+                st.setInt(1, idDoacao);
+                st.setInt(2, idEndereco);
+                st.execute();
+                st.close();
+            }
+
+            // 4. ItemDoado
+            String sqlItem = "INSERT INTO itemdoado (descricao, quantidade, unidademedida) VALUES (?, ?, ?) RETURNING id_item";
+            st = con.prepareStatement(sqlItem);
+            st.setString(1, doacao.getDescricaoItem());
+            st.setDouble(2, doacao.getQuantidade());
+            st.setString(3, doacao.getUnidadeMedida());
+            rs = st.executeQuery();
+            rs.next();
+            int idItem = rs.getInt(1);
+            st.close();
+
+            // 5. ItemDoacao Relacao
+            st = con.prepareStatement("INSERT INTO itemdoacao_rel (id_item, id_doacao) VALUES (?, ?)");
+            st.setInt(1, idItem);
+            st.setInt(2, idDoacao);
+            st.execute();
+            st.close();
+
+            // 6. Subtipos
+            if ("A".equalsIgnoreCase(doacao.getTipoItem())) {
+                st = con.prepareStatement("INSERT INTO alimento (id_item, datavalidade) VALUES (?, '2025-12-31')");
+                st.setInt(1, idItem);
+                st.execute();
+            } else if ("V".equalsIgnoreCase(doacao.getTipoItem())) {
+                st = con.prepareStatement("INSERT INTO vestuario (id_item, faixaetaria, genero, tamanho) VALUES (?, ?, ?, ?)");
+                st.setInt(1, idItem);
+                st.setString(2, doacao.getFaixaEtaria());
+                st.setString(3, doacao.getGenero());
+                st.setInt(4, doacao.getTamanho());
+                st.execute();
+            }
+
+            con.commit();
+        } catch (SQLException e) {
+            con.rollback();
+            throw e;
+        } finally {
+            con.setAutoCommit(true);
+        }
+    }
+
+    public static ArrayList<DoacaoBean> listCompleta(Connection con) throws SQLException {
+        ArrayList<DoacaoBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        String sql = "SELECT d.id_doacao, d.descricaogeral, d.statusdoacao, i.descricao, u.nome " +
+                     "FROM doacao d " +
+                     "LEFT JOIN itemdoacao_rel rel ON d.id_doacao = rel.id_doacao " +
+                     "LEFT JOIN itemdoado i ON rel.id_item = i.id_item " +
+                     "LEFT JOIN cadastradoacao cd ON d.id_doacao = cd.id_doacao " +
+                     "LEFT JOIN usuario u ON cd.id_usuario = u.id_usuario " +
+                     "ORDER BY d.id_doacao";
+                     
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()) {
+            DoacaoBean d = new DoacaoBean();
+            d.setIdDoacao(rs.getInt(1));
+            d.setDescricaoGeral(rs.getString(2));
+            d.setStatusDoacao(rs.getString(3));
+            d.setDescricaoItem(rs.getString(4)); // Pode ser null se deletou item
+            d.setNomeDoador(rs.getString(5));
+            list.add(d);
+        }
+        return list;
+    }
+
+    public static ArrayList<String> listItensDaDoacao(Connection con, int idDoacao) throws SQLException {
+        ArrayList<String> list = new ArrayList<>();
+        String sql = "SELECT i.id_item, i.descricao, i.quantidade, i.unidademedida " +
+                     "FROM itemdoado i " +
+                     "JOIN itemdoacao_rel rel ON i.id_item = rel.id_item " +
+                     "WHERE rel.id_doacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idDoacao);
+        ResultSet rs = st.executeQuery();
+        while(rs.next()) {
+            list.add("ID Item: " + rs.getInt(1) + " | " + rs.getString(2) + " (" + rs.getDouble(3) + " " + rs.getString(4) + ")");
+        }
+        return list;
+    }
+    
+    public static void updateDoacao(Connection con, int idDoacao, String novoStatus) throws SQLException {
+        String sql = "UPDATE doacao SET statusdoacao = ? WHERE id_doacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setString(1, novoStatus);
+        st.setInt(2, idDoacao);
+        st.executeUpdate();
+    }
+
+    public static void updateItem(Connection con, int idItem, double novaQtd) throws SQLException {
+        String sql = "UPDATE itemdoado SET quantidade = ? WHERE id_item = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setDouble(1, novaQtd);
+        st.setInt(2, idItem);
+        st.executeUpdate();
+    }
+
+    public static void deleteDoacao(Connection con, int idDoacao) throws SQLException {
+        String sql = "DELETE FROM doacao WHERE id_doacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idDoacao);
+        st.executeUpdate();
+    }
+
+    public static void deleteItem(Connection con, int idItem) throws SQLException {
+        String sql = "DELETE FROM itemdoado WHERE id_item = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idItem);
+        st.executeUpdate();
+    }
+}
+
+
+./model/UsuarioModel.java
+----------------------------------------
+package model;
+
+import java.sql.*;
+import java.util.ArrayList;
+import bean.UsuarioBean;
+import bean.EnderecoBean;
+
+public class UsuarioModel {
+
+    public static void create(Connection con, UsuarioBean user, EnderecoBean end) throws SQLException {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con.setAutoCommit(false);
+            
+            // 1. Endereco
+            String sqlEnd = "INSERT INTO endereco (rua, numero, cidade, bairro, estado, cep) VALUES (?, ?, ?, 'Centro', 'SC', 89200000) RETURNING id_endereco";
+            st = con.prepareStatement(sqlEnd);
+            st.setString(1, end.getRua());
+            st.setInt(2, end.getNumero());
+            st.setString(3, end.getCidade());
+            rs = st.executeQuery();
+            rs.next();
+            int idEndereco = rs.getInt(1);
+            st.close();
+
+            // 2. Usuario
+            String sqlUser = "INSERT INTO usuario (nome, email, telefone) VALUES (?, ?, ?) RETURNING id_usuario";
+            st = con.prepareStatement(sqlUser);
+            st.setString(1, user.getNome());
+            st.setString(2, user.getEmail());
+            st.setLong(3, user.getTelefone());
+            rs = st.executeQuery();
+            rs.next();
+            int idUsuario = rs.getInt(1);
+            user.setId(idUsuario);
+            st.close();
+
+            // 3. Especialização
+            if ("DOADOR".equalsIgnoreCase(user.getTipoUsuario())) {
+                st = con.prepareStatement("INSERT INTO doador (id_usuario, cnpj, tipoestabelecimento) VALUES (?, ?, ?)");
+                st.setInt(1, idUsuario);
+                st.setLong(2, user.getCnpj());
+                st.setString(3, user.getTipoEstabelecimento());
+                st.execute();
+            } else {
+                st = con.prepareStatement("INSERT INTO receptor (id_usuario, cpf_cnpj, nomeresponsavel) VALUES (?, ?, ?)");
+                st.setInt(1, idUsuario);
+                st.setLong(2, user.getCpfCnpjReceptor());
+                st.setString(3, user.getNomeResponsavel());
+                st.execute();
+            }
+            st.close();
+
+            // 4. Vinculo
+            st = con.prepareStatement("INSERT INTO enderecousuario (id_endereco, id_usuario) VALUES (?, ?)");
+            st.setInt(1, idEndereco);
+            st.setInt(2, idUsuario);
+            st.execute();
+
+            con.commit();
+        } catch (SQLException e) {
+            con.rollback();
+            throw e;
+        } finally {
+            con.setAutoCommit(true);
+        }
+    }
+
+    public static ArrayList<UsuarioBean> listAll(Connection con) throws SQLException {
+        ArrayList<UsuarioBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("SELECT id_usuario, nome, email, telefone FROM usuario ORDER BY id_usuario");
+        while(rs.next()) {
+            UsuarioBean u = new UsuarioBean();
+            u.setId(rs.getInt(1));
+            u.setNome(rs.getString(2));
+            u.setEmail(rs.getString(3));
+            u.setTelefone(rs.getLong(4));
+            list.add(u);
+        }
+        return list;
+    }
+
+    public static ArrayList<UsuarioBean> listDoadores(Connection con) throws SQLException {
+        ArrayList<UsuarioBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        String sql = "SELECT u.id_usuario, u.nome, d.tipoestabelecimento FROM usuario u JOIN doador d ON u.id_usuario = d.id_usuario";
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()) {
+            UsuarioBean u = new UsuarioBean();
+            u.setId(rs.getInt(1));
+            u.setNome(rs.getString(2));
+            u.setTipoEstabelecimento(rs.getString(3));
+            u.setTipoUsuario("DOADOR");
+            list.add(u);
+        }
+        return list;
+    }
+
+    public static ArrayList<UsuarioBean> listReceptores(Connection con) throws SQLException {
+        ArrayList<UsuarioBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        String sql = "SELECT u.id_usuario, u.nome, r.nomeresponsavel FROM usuario u JOIN receptor r ON u.id_usuario = r.id_usuario";
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()) {
+            UsuarioBean u = new UsuarioBean();
+            u.setId(rs.getInt(1));
+            u.setNome(rs.getString(2));
+            u.setNomeResponsavel(rs.getString(3));
+            u.setTipoUsuario("RECEPTOR");
+            list.add(u);
+        }
+        return list;
+    }
+
+    public static void update(Connection con, int idUsuario, String novoEmail, long novoTelefone) throws SQLException {
+        String sql = "UPDATE usuario SET email = ?, telefone = ? WHERE id_usuario = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setString(1, novoEmail);
+        st.setLong(2, novoTelefone);
+        st.setInt(3, idUsuario);
+        st.executeUpdate();
+        st.close();
+    }
+
+    public static void delete(Connection con, int idUsuario) throws SQLException {
+        // Nota: Em banco real, constraints (FK) podem impedir delete direto sem deletar filhos antes.
+        // O CASCADE no banco resolveria, ou deletar manualmente tabelas filhas.
+        // Aqui tentaremos o delete direto na tabela pai, assumindo CASCADE ou sem vinculos.
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idUsuario);
+        st.executeUpdate();
+        st.close();
+    }
+}
+
+
+./utils/Conexao.java
+----------------------------------------
+/**
+    Classe responsável por estabelecer a conexão com o DB.
+ */
+
+package utils;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class Conexao {
+    public Connection getConnection() {
+        try {
+            // Tenta a conexão
+            String url = "jdbc:postgresql://localhost:5432/plataforma_doacao"; 
+            String user = "postgres";
+            String senha = "asdb12345"; 
+
+            // se der boa retorna a conexão funcionando
+            return DriverManager.getConnection(url, user, senha);
+        } catch (SQLException ex) {
+            System.out.println("Erro de Conexao: " + ex.getMessage());
+            return null;
+        }
+    }
+}
+
+
+
+./bean/DoacaoBean.java
+----------------------------------------
+package bean;
+import java.sql.Date;
+
+public class DoacaoBean {
+    // Tabela Doacao
+    private int idDoacao;
+    private String descricaoGeral;
+    private String statusDoacao;
+    private Date dataCadastro;
+
+    // Tabela ItemDoado
+    private int idItem;
+    private String descricaoItem;
+    private double quantidade;
+    private String unidadeMedida;
+
+    // Subtipos (Alimento, Vestuario, Higiene)
+    private String tipoItem; // "A", "V" ou "H"
+    private Date dataValidade; // Alimento
+    private String faixaEtaria; // Vestuario
+    private String genero; // Vestuario
+    private int tamanho; // Vestuario
+    private double volume; // Higiene
+
+    // Vínculos
+    private String nomeDoador; // Para exibição
+
+    public int getIdDoacao() { return idDoacao; }
+    public void setIdDoacao(int id) { this.idDoacao = id; }
+    public String getDescricaoGeral() { return descricaoGeral; }
+    public void setDescricaoGeral(String d) { this.descricaoGeral = d; }
+    public String getStatusDoacao() { return statusDoacao; }
+    public void setStatusDoacao(String s) { this.statusDoacao = s; }
+    
+    public String getDescricaoItem() { return descricaoItem; }
+    public void setDescricaoItem(String d) { this.descricaoItem = d; }
+    public double getQuantidade() { return quantidade; }
+    public void setQuantidade(double q) { this.quantidade = q; }
+    public String getUnidadeMedida() { return unidadeMedida; }
+    public void setUnidadeMedida(String u) { this.unidadeMedida = u; }
+    
+    public String getTipoItem() { return tipoItem; }
+    public void setTipoItem(String t) { this.tipoItem = t; }
+    public Date getDataValidade() { return dataValidade; }
+    public void setDataValidade(Date d) { this.dataValidade = d; }
+    
+    public String getFaixaEtaria() { return faixaEtaria; }
+    public void setFaixaEtaria(String f) { this.faixaEtaria = f; }
+    public String getGenero() { return genero; }
+    public void setGenero(String g) { this.genero = g; }
+    public int getTamanho() { return tamanho; }
+    public void setTamanho(int t) { this.tamanho = t; }
+
+    // Getters e Setters para Higiene
+    public double getVolume() { return volume; }
+    public void setVolume(double volume) { this.volume = volume; }
+    
+    public void setNomeDoador(String n) { this.nomeDoador = n; }
+    
+    @Override
+    public String toString() {
+        String detalhe = "";
+        if ("A".equals(tipoItem)) detalhe = " (Alimento)";
+        else if ("V".equals(tipoItem)) detalhe = " (Vestuario)";
+        else if ("H".equals(tipoItem)) detalhe = " (Higiene)";
+        
+        return "ID: " + idDoacao + " | " + descricaoGeral + " | Status: " + statusDoacao + " | Item: " + descricaoItem + detalhe;
+    }
+}
+
+
+./bean/SolicitacaoBean.java
+----------------------------------------
+package bean;
+import java.sql.Date;
+
+public class SolicitacaoBean {
+    private int idSolicitacao;
+    private Date dataSolicitacao;
+    private String status;
+    private int idReceptor;
+    private int idDoacao;
+    
+    // Campos para exibição (JOINs)
+    private String nomeReceptor; 
+    private String nomeDoacao;   // Novo campo
+
+    public int getIdSolicitacao() { return idSolicitacao; }
+    public void setIdSolicitacao(int id) { this.idSolicitacao = id; }
+    
+    public Date getDataSolicitacao() { return dataSolicitacao; }
+    public void setDataSolicitacao(Date d) { this.dataSolicitacao = d; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String s) { this.status = s; }
+    
+    public int getIdReceptor() { return idReceptor; }
+    public void setIdReceptor(int id) { this.idReceptor = id; }
+    
+    public int getIdDoacao() { return idDoacao; }
+    public void setIdDoacao(int id) { this.idDoacao = id; }
+    
+    public String getNomeReceptor() { return nomeReceptor; }
+    public void setNomeReceptor(String n) { this.nomeReceptor = n; }
+
+    public String getNomeDoacao() { return nomeDoacao; }
+    public void setNomeDoacao(String n) { this.nomeDoacao = n; }
+
+    @Override
+    public String toString() {
+        // ToString mais completo para o relatório
+        return "ID: " + idSolicitacao + 
+               " | Data: " + dataSolicitacao +
+               " | Status: " + status + 
+               " | Receptor: " + (nomeReceptor != null ? nomeReceptor : idReceptor) +
+               " | Doacao: " + (nomeDoacao != null ? nomeDoacao : idDoacao);
+    }
+}
+
+
+./bean/EnderecoBean.java
+----------------------------------------
+package bean;
+
+public class EnderecoBean {
+    private int id;
+    private String rua;
+    private int numero;
+    private String cidade;
+    private String estado;
+    private String bairro;
+    private int cep;
+
+    // Construtor vazio
+    public EnderecoBean() {}
+
+    // Construtor rápido
+    public EnderecoBean(String rua, int numero, String cidade) {
+        this.rua = rua;
+        this.numero = numero;
+        this.cidade = cidade;
+    }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getRua() { return rua; }
+    public void setRua(String rua) { this.rua = rua; }
+    public int getNumero() { return numero; }
+    public void setNumero(int numero) { this.numero = numero; }
+    public String getCidade() { return cidade; }
+    public void setCidade(String cidade) { this.cidade = cidade; }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
+    public String getBairro() { return bairro; }
+    public void setBairro(String bairro) { this.bairro = bairro; }
+    public int getCep() { return cep; }
+    public void setCep(int cep) { this.cep = cep; }
+    
+    @Override
+    public String toString() {
+        return rua + ", " + numero + " - " + cidade;
+    }
+}
+
+
+./bean/UsuarioBean.java
+----------------------------------------
+package bean;
+
+public class UsuarioBean {
+    // Dados Comuns (Tabela Usuario)
+    private int id;
+    private String nome;
+    private String email;
+    private long telefone;
+    
+    // Dados de Doador (Tabela Doador)
+    private long cnpj;
+    private String tipoEstabelecimento;
+
+    // Dados de Receptor (Tabela Receptor)
+    private long cpfCnpjReceptor;
+    private String nomeResponsavel;
+
+    // Controle interno
+    private String tipoUsuario; // "DOADOR" ou "RECEPTOR"
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public long getTelefone() { return telefone; }
+    public void setTelefone(long telefone) { this.telefone = telefone; }
+    
+    public long getCnpj() { return cnpj; }
+    public void setCnpj(long cnpj) { this.cnpj = cnpj; }
+    public String getTipoEstabelecimento() { return tipoEstabelecimento; }
+    public void setTipoEstabelecimento(String tipo) { this.tipoEstabelecimento = tipo; }
+    
+    public long getCpfCnpjReceptor() { return cpfCnpjReceptor; }
+    public void setCpfCnpjReceptor(long cpf) { this.cpfCnpjReceptor = cpf; }
+    public String getNomeResponsavel() { return nomeResponsavel; }
+    public void setNomeResponsavel(String nome) { this.nomeResponsavel = nome; }
+    
+    public String getTipoUsuario() { return tipoUsuario; }
+    public void setTipoUsuario(String tipoUsuario) { this.tipoUsuario = tipoUsuario; }
+
+    @Override
+    public String toString() {
+        return id + " - " + nome + " (" + tipoUsuario + ")";
+    }
+}
+
+
+./controller/SolicitacaoController.java
+----------------------------------------
+package controller;
+
+import java.sql.Connection;
+import java.util.Scanner;
+import model.SolicitacaoModel;
+import bean.SolicitacaoBean;
+
+public class SolicitacaoController {
+    private Scanner in = new Scanner(System.in);
+    
+    public void criarSolicitacao(Connection con) {
+        System.out.println("--- SOLICITAR DOACAO ---");
+        System.out.print("ID da Doacao desejada: ");
+        int idDoacao = in.nextInt();
+        System.out.print("ID do seu Usuario (Receptor): ");
+        int idReceptor = in.nextInt();
+        in.nextLine();
+        
+        try {
+            SolicitacaoModel.create(con, idDoacao, idReceptor);
+            System.out.println("Solicitacao registrada! Status: Pendente");
+        } catch(Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+    
+    // Atualizado para usar o relatório detalhado (JOINs)
+    public void listar(Connection con) {
+        try {
+            System.out.println("--- RELATORIO DE SOLICITACOES (DETALHADO) ---");
+            // Chama o metodo com JOIN de tabelas
+            for(SolicitacaoBean s : SolicitacaoModel.listSolicitacoesDetalhadas(con)) {
+                System.out.println(s.toString());
+            }
+        } catch(Exception e) {
+            System.out.println("Erro ao listar: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void atualizar(Connection con) {
+        System.out.println("--- ATUALIZAR SOLICITACAO ---");
+        System.out.print("ID da Solicitacao: ");
+        int id = in.nextInt();
+        in.nextLine();
+        System.out.print("Novo Status (Aprovada/Recusada/Entregue): ");
+        String status = in.nextLine();
+
+        try {
+            SolicitacaoModel.updateStatus(con, id, status);
+            System.out.println("Solicitacao atualizada.");
+        } catch(Exception e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
+    public void deletar(Connection con) {
+        System.out.println("--- DELETAR SOLICITACAO ---");
+        System.out.print("ID da Solicitacao: ");
+        int id = in.nextInt();
+        in.nextLine();
+
+        try {
+            SolicitacaoModel.delete(con, id);
+            System.out.println("Solicitacao removida.");
+        } catch(Exception e) {
+            System.out.println("Erro ao deletar: " + e.getMessage());
+        }
+    }
+}
+
+
+./controller/UsuarioController.java
+----------------------------------------
+package controller;
+
+import java.sql.Connection;
+import java.util.Scanner;
+import bean.UsuarioBean;
+import bean.EnderecoBean;
+import model.UsuarioModel;
+
+public class UsuarioController {
+    
+    private Scanner in = new Scanner(System.in);
+
+    public void cadastrar(Connection con) {
+        UsuarioBean user = new UsuarioBean();
+        EnderecoBean end = new EnderecoBean();
+
+        System.out.println("--- CADASTRO DE USUARIO ---");
+        System.out.print("Nome: "); user.setNome(in.nextLine());
+        System.out.print("Email: "); user.setEmail(in.next());
+        System.out.print("Telefone: "); user.setTelefone(in.nextLong());
+        
+        System.out.print("Tipo (1-Doador / 2-Receptor): ");
+        int tipo = in.nextInt();
+        
+        if (tipo == 1) {
+            user.setTipoUsuario("DOADOR");
+            System.out.print("CNPJ: "); user.setCnpj(in.nextLong());
+            System.out.print("Tipo Estabelecimento (Loja/Mercado): "); user.setTipoEstabelecimento(in.next());
+        } else {
+            user.setTipoUsuario("RECEPTOR");
+            System.out.print("CPF/CNPJ: "); user.setCpfCnpjReceptor(in.nextLong());
+            System.out.print("Responsavel: "); user.setNomeResponsavel(in.next());
+        }
+        in.nextLine(); // Limpar buffer
+
+        System.out.println("--- ENDERECO ---");
+        System.out.print("Rua: "); end.setRua(in.nextLine());
+        System.out.print("Numero: "); end.setNumero(in.nextInt());
+        System.out.print("Cidade: "); end.setCidade(in.next());
+
+        try {
+            UsuarioModel.create(con, user, end);
+            System.out.println("Usuario cadastrado com ID: " + user.getId());
+        } catch (Exception e) {
+            System.out.println("Erro ao cadastrar: " + e.getMessage());
+        }
+    }
+    
+    public void listar(Connection con) {
+        try {
+            System.out.println("--- LISTA GERAL DE USUARIOS ---");
+            for(UsuarioBean u : UsuarioModel.listAll(con)) {
+                System.out.println("ID: " + u.getId() + " | Nome: " + u.getNome() + " | Email: " + u.getEmail());
+            }
+        } catch (Exception e) {
+            System.out.println("Erro listar: " + e.getMessage());
+        }
+    }
+
+    public void listarDoadores(Connection con) {
+        try {
+            System.out.println("--- LISTA DE DOADORES ---");
+            for(UsuarioBean u : UsuarioModel.listDoadores(con)) {
+                System.out.println("ID: " + u.getId() + " | Nome: " + u.getNome() + " | Tipo: " + u.getTipoEstabelecimento());
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar doadores: " + e.getMessage());
+        }
+    }
+    
+    // NOVO METODO: Chama a consulta com Agregação e Subconsulta
+    public void listarRankingDoadores(Connection con) {
+        try {
+            System.out.println("--- RANKING DE DOADORES (ACIMA DA MEDIA) ---");
+            for(String s : UsuarioModel.listTopDoadores(con)) {
+                System.out.println(s);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao gerar ranking: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void listarReceptores(Connection con) {
+        try {
+            System.out.println("--- LISTA DE RECEPTORES ---");
+            for(UsuarioBean u : UsuarioModel.listReceptores(con)) {
+                System.out.println("ID: " + u.getId() + " | Nome: " + u.getNome() + " | Responsavel: " + u.getNomeResponsavel());
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar receptores: " + e.getMessage());
+        }
+    }
+
+    public void atualizar(Connection con) {
+        System.out.println("--- ATUALIZAR USUARIO ---");
+        System.out.print("ID do Usuario: ");
+        int id = in.nextInt();
+        System.out.print("Novo Email: ");
+        String email = in.next();
+        System.out.print("Novo Telefone: ");
+        long tel = in.nextLong();
+        in.nextLine(); // buffer
+
+        try {
+            UsuarioModel.update(con, id, email, tel);
+            System.out.println("Usuario atualizado!");
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
+    public void deletar(Connection con) {
+        System.out.println("--- DELETAR USUARIO ---");
+        System.out.print("ID do Usuario a excluir: ");
+        int id = in.nextInt();
+        in.nextLine();
+
+        try {
+            UsuarioModel.delete(con, id);
+            System.out.println("Usuario deletado com sucesso.");
+        } catch (Exception e) {
+            System.out.println("Erro ao deletar (verifique se o usuario tem vinculos): " + e.getMessage());
+        }
+    }
+}
+
+
+./controller/DoacaoController.java
+----------------------------------------
+package controller;
+
+import java.sql.Connection;
+import java.util.Scanner;
+import bean.DoacaoBean;
+import model.DoacaoModel;
+
+public class DoacaoController {
+    private Scanner in = new Scanner(System.in);
+
+    public void cadastrar(Connection con) {
+        DoacaoBean d = new DoacaoBean();
+
+        System.out.println("--- NOVA DOACAO ---");
+        System.out.print("ID do Usuario Doador (deve existir): ");
+        int idDoador = in.nextInt();
+        in.nextLine(); // limpar buffer
+
+        System.out.print("Titulo da Doacao: "); d.setDescricaoGeral(in.nextLine());
+        System.out.print("Nome do Item: "); d.setDescricaoItem(in.nextLine());
+        System.out.print("Quantidade: "); d.setQuantidade(in.nextDouble());
+        System.out.print("Unidade (kg, litros, pacotes): "); d.setUnidadeMedida(in.next());
+        
+        System.out.print("Tipo (A-Alimento, V-Vestuario, H-Higiene): ");
+        String tipo = in.next().toUpperCase();
+        d.setTipoItem(tipo);
+        
+        if ("V".equals(tipo)) {
+            System.out.print("Tamanho (numero): "); d.setTamanho(in.nextInt());
+            System.out.print("Genero (M/F/U): "); d.setGenero(in.next());
+            d.setFaixaEtaria("Adulto"); // Pode personalizar se quiser perguntar
+        } else if ("H".equals(tipo)) {
+            System.out.print("Volume (em ml ou L - apenas numeros): "); 
+            d.setVolume(in.nextDouble());
+        }
+
+        try {
+            DoacaoModel.create(con, d, idDoador);
+            System.out.println("Doacao cadastrada com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+            e.printStackTrace(); 
+        }
+    }
+    
+    public void listarCompleto(Connection con) {
+        try {
+            System.out.println("--- DOACOES DISPONIVEIS ---");
+            for(DoacaoBean d : DoacaoModel.listCompleta(con)) {
+                System.out.println(d);
+            }
+        } catch(Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+    public void listarItensDaDoacao(Connection con) {
+        System.out.print("Digite o ID da Doacao para ver os itens: ");
+        int id = in.nextInt();
+        in.nextLine();
+        try {
+            System.out.println("--- ITENS DA DOACAO " + id + " ---");
+            for (String s : DoacaoModel.listItensDaDoacao(con, id)) {
+                System.out.println(s);
+            }
+        } catch(Exception e) {
+            System.out.println("Erro ao listar itens: " + e.getMessage());
+        }
+    }
+
+    public void atualizarDoacao(Connection con) {
+        System.out.print("ID da Doacao a atualizar: ");
+        int id = in.nextInt();
+        in.nextLine();
+        System.out.print("Novo Status (Disponivel/Agendada/Concluida): ");
+        String status = in.nextLine();
+
+        try {
+            DoacaoModel.updateDoacao(con, id, status);
+            System.out.println("Status da doacao atualizado.");
+        } catch(Exception e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
+    public void atualizarItem(Connection con) {
+        System.out.print("ID do Item a atualizar: ");
+        int id = in.nextInt();
+        System.out.print("Nova Quantidade: ");
+        double qtd = in.nextDouble();
+        in.nextLine();
+
+        try {
+            DoacaoModel.updateItem(con, id, qtd);
+            System.out.println("Item atualizado.");
+        } catch(Exception e) {
+            System.out.println("Erro ao atualizar item: " + e.getMessage());
+        }
+    }
+
+    public void deletarDoacao(Connection con) {
+        System.out.print("ID da Doacao a deletar: ");
+        int id = in.nextInt();
+        in.nextLine();
+        try {
+            DoacaoModel.deleteDoacao(con, id);
+            System.out.println("Doacao removida.");
+        } catch(Exception e) {
+            System.out.println("Erro ao deletar doacao: " + e.getMessage());
+        }
+    }
+
+    public void deletarItem(Connection con) {
+        System.out.print("ID do Item a deletar: ");
+        int id = in.nextInt();
+        in.nextLine();
+        try {
+            DoacaoModel.deleteItem(con, id);
+            System.out.println("Item removido.");
+        } catch(Exception e) {
+            System.out.println("Erro ao deletar item: " + e.getMessage());
+        }
+    }
+}
+
+
+./model/SolicitacaoModel.java
+----------------------------------------
+package model;
+
+import java.sql.*;
+import java.util.ArrayList;
+import bean.SolicitacaoBean;
+
+public class SolicitacaoModel {
+
+    public static void create(Connection con, int idDoacao, int idReceptor) throws SQLException {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            con.setAutoCommit(false);
+
+            // 1. Solicitacao
+            String sqlSol = "INSERT INTO solicitacao (datasolicitacao, status) VALUES (CURRENT_DATE, 'Pendente') RETURNING id_solicitacao";
+            st = con.prepareStatement(sqlSol);
+            rs = st.executeQuery();
+            rs.next();
+            int idSolicitacao = rs.getInt(1);
+            st.close();
+
+            // 2. Relacao SolicitaDoacao (CORRIGIDO: rel_solicitadoacao)
+            st = con.prepareStatement("INSERT INTO rel_solicitadoacao (id_solicitacao, id_doacao) VALUES (?, ?)");
+            st.setInt(1, idSolicitacao);
+            st.setInt(2, idDoacao);
+            st.execute();
+            st.close();
+
+            // 3. Relacao Solicita (CORRIGIDO: rel_solicita)
+            // NOTA: No script SQL, a coluna chama 'id_receptor', mesmo sendo FK de usuario.
+            // Mantemos 'id_receptor' no SQL abaixo para bater com a tabela criada.
+            st = con.prepareStatement("INSERT INTO rel_solicita (id_solicitacao, id_receptor) VALUES (?, ?)");
+            st.setInt(1, idSolicitacao);
+            st.setInt(2, idReceptor); // Aqui passamos o ID do usuario que está solicitando
+            st.execute();
+            st.close();
+            
+            con.commit();
+        } catch (SQLException e) {
+            con.rollback();
+            throw e;
+        } finally {
+            con.setAutoCommit(true);
+        }
+    }
+    
+    public static ArrayList<SolicitacaoBean> listMinhasSolicitacoes(Connection con) throws SQLException {
+        ArrayList<SolicitacaoBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        // CORRIGIDO: joins com rel_solicita
+        String sql = "SELECT s.id_solicitacao, s.status, u.nome " +
+                     "FROM solicitacao s " +
+                     "JOIN rel_solicita sol ON s.id_solicitacao = sol.id_solicitacao " +
+                     "JOIN usuario u ON sol.id_receptor = u.id_usuario";
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()){
+            SolicitacaoBean sb = new SolicitacaoBean();
+            sb.setIdSolicitacao(rs.getInt(1));
+            sb.setStatus(rs.getString(2));
+            sb.setNomeReceptor(rs.getString(3));
+            list.add(sb);
+        }
+        return list;
+    }
+
+    public static void updateStatus(Connection con, int idSolicitacao, String novoStatus) throws SQLException {
+        String sql = "UPDATE solicitacao SET status = ? WHERE id_solicitacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setString(1, novoStatus);
+        st.setInt(2, idSolicitacao);
+        st.executeUpdate();
+    }
+
+    public static void delete(Connection con, int idSolicitacao) throws SQLException {
+        String sql = "DELETE FROM solicitacao WHERE id_solicitacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idSolicitacao);
+        st.executeUpdate();
+    }
+}
+
+
+./model/DoacaoModel.java
+----------------------------------------
+package model;
+
+import java.sql.*;
+import java.util.ArrayList;
+import bean.DoacaoBean;
+
+public class DoacaoModel {
+
+    public static void create(Connection con, DoacaoBean doacao, int idDoador) throws SQLException {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con.setAutoCommit(false);
+
+            // 1. Doacao
+            String sqlDoacao = "INSERT INTO doacao (datacadastro, descricaogeral, statusdoacao) VALUES (CURRENT_DATE, ?, 'Disponivel') RETURNING id_doacao";
+            st = con.prepareStatement(sqlDoacao);
+            st.setString(1, doacao.getDescricaoGeral());
+            rs = st.executeQuery();
+            rs.next();
+            int idDoacao = rs.getInt(1);
+            doacao.setIdDoacao(idDoacao);
+            st.close();
+
+            // 2. Relacao Cadastra (CORRIGIDO: rel_cadastradoacao)
+            st = con.prepareStatement("INSERT INTO rel_cadastradoacao (id_doacao, id_usuario) VALUES (?, ?)");
+            st.setInt(1, idDoacao);
+            st.setInt(2, idDoador);
+            st.execute();
+            st.close();
+            
+            // 3. Endereco Coleta (CORRIGIDO: rel_enderecocoleta)
+            // Busca um endereço existente do usuario
+            String sqlBuscaEnd = "SELECT id_endereco FROM rel_enderecousuario WHERE id_usuario = ? LIMIT 1";
+            st = con.prepareStatement(sqlBuscaEnd);
+            st.setInt(1, idDoador);
+            rs = st.executeQuery();
+            int idEndereco = 0;
+            if (rs.next()) idEndereco = rs.getInt(1);
+            st.close();
+            
+            if (idEndereco > 0) {
+                st = con.prepareStatement("INSERT INTO rel_enderecocoleta (id_doacao, id_endereco, datahora) VALUES (?, ?, CURRENT_TIMESTAMP)");
+                st.setInt(1, idDoacao);
+                st.setInt(2, idEndereco);
+                st.execute();
+                st.close();
+            }
+
+            // 4. ItemDoado
+            String sqlItem = "INSERT INTO itemdoado (descricao, quantidade, unidademedida) VALUES (?, ?, ?) RETURNING id_item";
+            st = con.prepareStatement(sqlItem);
+            st.setString(1, doacao.getDescricaoItem());
+            st.setDouble(2, doacao.getQuantidade());
+            st.setString(3, doacao.getUnidadeMedida());
+            rs = st.executeQuery();
+            rs.next();
+            int idItem = rs.getInt(1);
+            st.close();
+
+            // 5. ItemDoacao Relacao (CORRIGIDO: rel_itemdoacao)
+            st = con.prepareStatement("INSERT INTO rel_itemdoacao (id_item, id_doacao) VALUES (?, ?)");
+            st.setInt(1, idItem);
+            st.setInt(2, idDoacao);
+            st.execute();
+            st.close();
+
+            // 6. Subtipos (ADICIONADO HIGIENE)
+            if ("A".equalsIgnoreCase(doacao.getTipoItem())) {
+                st = con.prepareStatement("INSERT INTO alimento (id_item, datavalidade) VALUES (?, '2025-12-31')");
+                st.setInt(1, idItem);
+                st.execute();
+            } else if ("V".equalsIgnoreCase(doacao.getTipoItem())) {
+                st = con.prepareStatement("INSERT INTO vestuario (id_item, faixaetaria, genero, tamanho) VALUES (?, ?, ?, ?)");
+                st.setInt(1, idItem);
+                st.setString(2, doacao.getFaixaEtaria());
+                st.setString(3, doacao.getGenero());
+                st.setInt(4, doacao.getTamanho());
+                st.execute();
+            } else if ("H".equalsIgnoreCase(doacao.getTipoItem())) {
+                st = con.prepareStatement("INSERT INTO higiene (id_item, volume) VALUES (?, ?)");
+                st.setInt(1, idItem);
+                st.setDouble(2, doacao.getVolume());
+                st.execute();
+            }
+
+            con.commit();
+        } catch (SQLException e) {
+            con.rollback();
+            throw e;
+        } finally {
+            con.setAutoCommit(true);
+        }
+    }
+
+    public static ArrayList<DoacaoBean> listCompleta(Connection con) throws SQLException {
+        ArrayList<DoacaoBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        // CORRIGIDO: Nomes das tabelas de relacionamento (rel_...)
+        String sql = "SELECT d.id_doacao, d.descricaogeral, d.statusdoacao, i.descricao, u.nome " +
+                     "FROM doacao d " +
+                     "LEFT JOIN rel_itemdoacao rel ON d.id_doacao = rel.id_doacao " +
+                     "LEFT JOIN itemdoado i ON rel.id_item = i.id_item " +
+                     "LEFT JOIN rel_cadastradoacao cd ON d.id_doacao = cd.id_doacao " +
+                     "LEFT JOIN usuario u ON cd.id_usuario = u.id_usuario " +
+                     "ORDER BY d.id_doacao";
+                     
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()) {
+            DoacaoBean d = new DoacaoBean();
+            d.setIdDoacao(rs.getInt(1));
+            d.setDescricaoGeral(rs.getString(2));
+            d.setStatusDoacao(rs.getString(3));
+            d.setDescricaoItem(rs.getString(4));
+            d.setNomeDoador(rs.getString(5));
+            list.add(d);
+        }
+        return list;
+    }
+
+    public static ArrayList<String> listItensDaDoacao(Connection con, int idDoacao) throws SQLException {
+        ArrayList<String> list = new ArrayList<>();
+        // CORRIGIDO: Tabela rel_itemdoacao
+        String sql = "SELECT i.id_item, i.descricao, i.quantidade, i.unidademedida " +
+                     "FROM itemdoado i " +
+                     "JOIN rel_itemdoacao rel ON i.id_item = rel.id_item " +
+                     "WHERE rel.id_doacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idDoacao);
+        ResultSet rs = st.executeQuery();
+        while(rs.next()) {
+            list.add("ID Item: " + rs.getInt(1) + " | " + rs.getString(2) + " (" + rs.getDouble(3) + " " + rs.getString(4) + ")");
+        }
+        return list;
+    }
+    
+    public static void updateDoacao(Connection con, int idDoacao, String novoStatus) throws SQLException {
+        String sql = "UPDATE doacao SET statusdoacao = ? WHERE id_doacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setString(1, novoStatus);
+        st.setInt(2, idDoacao);
+        st.executeUpdate();
+    }
+
+    public static void updateItem(Connection con, int idItem, double novaQtd) throws SQLException {
+        String sql = "UPDATE itemdoado SET quantidade = ? WHERE id_item = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setDouble(1, novaQtd);
+        st.setInt(2, idItem);
+        st.executeUpdate();
+    }
+
+    public static void deleteDoacao(Connection con, int idDoacao) throws SQLException {
+        String sql = "DELETE FROM doacao WHERE id_doacao = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idDoacao);
+        st.executeUpdate();
+    }
+
+    public static void deleteItem(Connection con, int idItem) throws SQLException {
+        String sql = "DELETE FROM itemdoado WHERE id_item = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idItem);
+        st.executeUpdate();
+    }
+}
+
+
+./model/UsuarioModel.java
+----------------------------------------
+package model;
+
+import java.sql.*;
+import java.util.ArrayList;
+import bean.UsuarioBean;
+import bean.EnderecoBean;
+
+public class UsuarioModel {
+
+    public static void create(Connection con, UsuarioBean user, EnderecoBean end) throws SQLException {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con.setAutoCommit(false);
+            
+            // 1. Endereco
+            String sqlEnd = "INSERT INTO endereco (rua, numero, cidade, bairro, estado, cep) VALUES (?, ?, ?, 'Centro', 'SC', 89200000) RETURNING id_endereco";
+            st = con.prepareStatement(sqlEnd);
+            st.setString(1, end.getRua());
+            st.setInt(2, end.getNumero());
+            st.setString(3, end.getCidade());
+            rs = st.executeQuery();
+            rs.next();
+            int idEndereco = rs.getInt(1);
+            st.close();
+
+            // 2. Usuario
+            String sqlUser = "INSERT INTO usuario (nome, email, telefone) VALUES (?, ?, ?) RETURNING id_usuario";
+            st = con.prepareStatement(sqlUser);
+            st.setString(1, user.getNome());
+            st.setString(2, user.getEmail());
+            st.setLong(3, user.getTelefone());
+            rs = st.executeQuery();
+            rs.next();
+            int idUsuario = rs.getInt(1);
+            user.setId(idUsuario);
+            st.close();
+
+            // 3. Especialização
+            if ("DOADOR".equalsIgnoreCase(user.getTipoUsuario())) {
+                st = con.prepareStatement("INSERT INTO doador (id_usuario, cnpj, tipoestabelecimento) VALUES (?, ?, ?)");
+                st.setInt(1, idUsuario);
+                st.setLong(2, user.getCnpj());
+                st.setString(3, user.getTipoEstabelecimento());
+                st.execute();
+            } else {
+                st = con.prepareStatement("INSERT INTO receptor (id_usuario, cpf_cnpj, nomeresponsavel) VALUES (?, ?, ?)");
+                st.setInt(1, idUsuario);
+                st.setLong(2, user.getCpfCnpjReceptor());
+                st.setString(3, user.getNomeResponsavel());
+                st.execute();
+            }
+            st.close();
+
+            // 4. Vinculo
+            st = con.prepareStatement("INSERT INTO enderecousuario (id_endereco, id_usuario) VALUES (?, ?)");
+            st.setInt(1, idEndereco);
+            st.setInt(2, idUsuario);
+            st.execute();
+
+            con.commit();
+        } catch (SQLException e) {
+            con.rollback();
+            throw e;
+        } finally {
+            con.setAutoCommit(true);
+        }
+    }
+
+    // REQUISITO 2: Subconsulta e Agregação
+    // Lista doadores que tem um numero de doacoes >= à media de doações por doador
+    // Retorna uma String formatada para facilitar a exibição no console
+    public static ArrayList<String> listTopDoadores(Connection con) throws SQLException {
+        ArrayList<String> relatorio = new ArrayList<>();
+        Statement st = con.createStatement();
+        
+        /* EXPLICAÇÃO SQL:
+           1. JOIN entre usuario e rel_cadastradoacao para pegar quem doou.
+           2. GROUP BY nome para Agrupar por usuário.
+           3. COUNT(id_doacao) para contar quantas doações cada um fez (Função de Agregação).
+           4. HAVING COUNT... >= (...) Filtra o agrupamento baseado numa condição.
+           5. (SELECT AVG(total) ...) Subconsulta que calcula a média de doações.
+        */
+        String sql = "SELECT u.nome, COUNT(rc.id_doacao) as qtd_doacoes " +
+                     "FROM usuario u " +
+                     "JOIN rel_cadastradoacao rc ON u.id_usuario = rc.id_usuario " +
+                     "GROUP BY u.nome " +
+                     "HAVING COUNT(rc.id_doacao) >= (" +
+                     "    SELECT AVG(sub.contagem) FROM (" +
+                     "        SELECT COUNT(id_doacao) as contagem " +
+                     "        FROM rel_cadastradoacao " +
+                     "        GROUP BY id_usuario" +
+                     "    ) as sub" +
+                     ") " +
+                     "ORDER BY qtd_doacoes DESC";
+
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()) {
+            String linha = "Doador: " + rs.getString("nome") + " | Total Doações: " + rs.getInt("qtd_doacoes");
+            relatorio.add(linha);
+        }
+        return relatorio;
+    }
+
+    public static ArrayList<UsuarioBean> listAll(Connection con) throws SQLException {
+        ArrayList<UsuarioBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("SELECT id_usuario, nome, email, telefone FROM usuario ORDER BY id_usuario");
+        while(rs.next()) {
+            UsuarioBean u = new UsuarioBean();
+            u.setId(rs.getInt(1));
+            u.setNome(rs.getString(2));
+            u.setEmail(rs.getString(3));
+            u.setTelefone(rs.getLong(4));
+            list.add(u);
+        }
+        return list;
+    }
+
+    public static ArrayList<UsuarioBean> listDoadores(Connection con) throws SQLException {
+        ArrayList<UsuarioBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        String sql = "SELECT u.id_usuario, u.nome, d.tipoestabelecimento FROM usuario u JOIN doador d ON u.id_usuario = d.id_usuario";
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()) {
+            UsuarioBean u = new UsuarioBean();
+            u.setId(rs.getInt(1));
+            u.setNome(rs.getString(2));
+            u.setTipoEstabelecimento(rs.getString(3));
+            u.setTipoUsuario("DOADOR");
+            list.add(u);
+        }
+        return list;
+    }
+
+    public static ArrayList<UsuarioBean> listReceptores(Connection con) throws SQLException {
+        ArrayList<UsuarioBean> list = new ArrayList<>();
+        Statement st = con.createStatement();
+        String sql = "SELECT u.id_usuario, u.nome, r.nomeresponsavel FROM usuario u JOIN receptor r ON u.id_usuario = r.id_usuario";
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()) {
+            UsuarioBean u = new UsuarioBean();
+            u.setId(rs.getInt(1));
+            u.setNome(rs.getString(2));
+            u.setNomeResponsavel(rs.getString(3));
+            u.setTipoUsuario("RECEPTOR");
+            list.add(u);
+        }
+        return list;
+    }
+
+    public static void update(Connection con, int idUsuario, String novoEmail, long novoTelefone) throws SQLException {
+        String sql = "UPDATE usuario SET email = ?, telefone = ? WHERE id_usuario = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setString(1, novoEmail);
+        st.setLong(2, novoTelefone);
+        st.setInt(3, idUsuario);
+        st.executeUpdate();
+        st.close();
+    }
+
+    public static void delete(Connection con, int idUsuario) throws SQLException {
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
+        PreparedStatement st = con.prepareStatement(sql);
+        st.setInt(1, idUsuario);
+        st.executeUpdate();
+        st.close();
+    }
+}
+
+
+./saida.txt
+----------------------------------------
+
+
+
+./utils/Conexao.java
+----------------------------------------
+/**
+    Classe responsável por estabelecer a conexão com o DB.
+ */
+
+package utils;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class Conexao {
+    public Connection getConnection() {
+        try {
+            // Tenta a conexão
+            String url = "jdbc:postgresql://localhost:5432/plataforma_doacao"; 
+            String user = "postgres";
+            String senha = "asdb12345"; 
+
+            // se der boa retorna a conexão funcionando
+            return DriverManager.getConnection(url, user, senha);
+        } catch (SQLException ex) {
+            System.out.println("Erro de Conexao: " + ex.getMessage());
+            return null;
+        }
+    }
+}
+
+
+
