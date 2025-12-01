@@ -101,7 +101,7 @@ As classes Model executam as queries SQL diretamente via JDBC.
 O projeto possui as dependências configuradas. Para rodar a bateria de testes é necessário ter o Maven e o JDK 21 instalados.
 
 ### 🔹 Instalando o Maven 
-    ``` bash
+    ```bash
     # Verifificar se o Maven já está instalado
     mvn -v
 
@@ -118,7 +118,7 @@ O projeto possui as dependências configuradas. Para rodar a bateria de testes �
     ```
 
 ### 🔹 Rodar os testes
-    ``` bash
+    ```bash
     # No diretório raiz do projeto (onde fica o pom.xml)
     mvn test
     ```
